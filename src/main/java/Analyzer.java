@@ -4,7 +4,8 @@
 public class Analyzer {
 
     public static void main(String[] args){
-        if (args.length != 0 ) {
+
+        if (args.length != 1 ) {
             System.out.println("You should supply an input file named \"FleetState.txt\'");
             return;
         }

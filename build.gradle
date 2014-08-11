@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'checkstyle'
+apply plugin: 'application'
+
+mainClassName = 'Analyzer'
 
 sourceCompatibility = 1.5
 version = '1.0'
