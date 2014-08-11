@@ -3,10 +3,11 @@
  */
 public class Analyzer {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        if (args.length != 1 ) {
-            System.out.println("You should supply an input file named \"FleetState.txt\'");
+        if (args.length != 1) {
+            System.out.println("You should supply an input file named "
+                    + "\"FleetState.txt\'");
             return;
         }
 
@@ -14,6 +15,14 @@ public class Analyzer {
         if (!fileName.equals("FleetState.txt")) {
             System.out.println("Input file name has to be FleetState.txt");
         }
+
+        //open the file
+
+        //parse the file according to format
+
+        //calculate stats required
+
+        //write the results to output file
 
     }
 }
