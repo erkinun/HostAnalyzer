@@ -16,4 +16,14 @@ public enum InstanceType {
     public String getType() {
         return type;
     }
+
+    public static InstanceType findByName(String type) {
+        for (InstanceType instanceType : values()) {
+            if (instanceType.getType().equals(type)) {
+                return instanceType;
+            }
+        }
+
+        throw new IllegalArgumentException("type: " + type + " not found!");
+    }
 }

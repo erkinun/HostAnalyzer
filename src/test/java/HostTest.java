@@ -1,7 +1,5 @@
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class HostTest {
 
@@ -12,14 +10,18 @@ public class HostTest {
         Host host = new Host(info);
 
         int id = 89;
-        assertEquals(id, host.getId());
+        Assert.assertEquals(id, host.getId());
 
-        assertEquals(InstanceType.M3, host.getType());
+        Assert.assertEquals(InstanceType.M3, host.getType());
 
         int length = 14;
-        assertEquals(length, host.getSlotsLength());
+        Assert.assertEquals(length, host.getSlotsLength());
 
         //first slot is occupied
-        assertEquals(true, host.getSlotState(0));
+        Assert.assertEquals(true, host.getSlotState(0));
+
+        Assert.assertEquals(true, host.getSlotState(13));
     }
+
+    //TODO think about error cases
 }
