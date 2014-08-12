@@ -1,7 +1,11 @@
+import java.util.List;
+
 /**
  * Created by ERKIN on 11/08/2014.
  */
 public class Analyzer {
+
+    private List<Host> hostList;
 
     public static void main(String[] args) {
 
@@ -16,13 +20,39 @@ public class Analyzer {
             System.out.println("Input file name has to be FleetState.txt");
         }
 
-        //open the file
-
-        //parse the file according to format
+        Analyzer analyzer = new Analyzer();
+        analyzer.loadHost(fileName);
 
         //calculate stats required
+        String results = analyzer.calculateStats();
 
         //write the results to output file
+        analyzer.writeResults(results);
 
     }
+
+    public void loadHost(String fileName) {
+        throw new RuntimeException();
+    }
+
+    public String calculateStats() {
+
+        //empty hosts of each type
+
+        //full hosts of each type
+
+        //count of most filled hosts by type
+        //first find the most filled host count
+        //how many are those hosts
+        throw new RuntimeException();
+    }
+
+    public void writeResults(String results) {
+        String outFileName = "Statistics.txt";
+    }
+
+    public int getHostCount() {
+        return hostList.size();
+    }
+
 }
