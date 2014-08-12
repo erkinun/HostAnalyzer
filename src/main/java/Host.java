@@ -5,6 +5,7 @@ public class Host {
 
     private int id;
     private int slotsLength;
+    private int occupiedSlots;
     private InstanceType type;
     private boolean[] slotStates;
 
@@ -21,11 +22,16 @@ public class Host {
 
         //third element is slots length
         slotsLength = Integer.valueOf(values[2]);
+        occupiedSlots = 0;
 
         slotStates = new boolean[slotsLength];
         int offSet = 3; //first three elems
         for (int i = 0; i < slotsLength; i++) {
             slotStates[i] = values[i+offSet].equals("1");
+
+            if (slotStates[i]) {
+                occupiedSlots++;
+            }
         }
 
     }
