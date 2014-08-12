@@ -1,4 +1,9 @@
-import java.io.*;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -9,9 +14,6 @@ import java.util.Arrays;
  * Created by ERKIN on 11/08/2014.
  */
 public class Analyzer {
-
-    private Map<InstanceType, Integer> emptyHosts;
-    private Map<InstanceType, Integer> fullHosts;
     private List<Host> hostList;
 
     public Analyzer() {
@@ -30,6 +32,8 @@ public class Analyzer {
         if (!fileName.equals("FleetState.txt")) {
             System.out.println("Input file name has to be FleetState.txt");
         }
+
+        //String fileName = "files/FleetState.txt";
 
         try {
             Analyzer analyzer = new Analyzer();
@@ -64,17 +68,17 @@ public class Analyzer {
 
 
         //empty hosts of each type
-        emptyHosts = new HashMap<>();
+        Map<InstanceType, Integer> emptyHosts = new HashMap<>();
         emptyHosts.put(InstanceType.M1, 0);
         emptyHosts.put(InstanceType.M2, 0);
         emptyHosts.put(InstanceType.M3, 0);
         //full hosts of each type
-        fullHosts = new HashMap<>();
+        Map<InstanceType, Integer> fullHosts = new HashMap<>();
         fullHosts.put(InstanceType.M1, 0);
         fullHosts.put(InstanceType.M2, 0);
         fullHosts.put(InstanceType.M3, 0);
 
-        determineEmptyAndFull();
+        determineEmptyAndFull(emptyHosts, fullHosts);
         Host[] hostArray = sortHosts();
 
         String mostFilledLine = analyzeMostFilled(hostArray);
@@ -106,7 +110,8 @@ public class Analyzer {
         return hostList.size();
     }
 
-    private void determineEmptyAndFull() {
+    private void determineEmptyAndFull(Map<InstanceType, Integer> emptyHosts,
+                                       Map<InstanceType, Integer> fullHosts) {
         for (Host host : hostList) {
             if (host.isEmpty()) {
                 int emptyCount = emptyHosts.get(host.getType());
