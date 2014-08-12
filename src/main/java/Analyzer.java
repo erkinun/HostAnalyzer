@@ -3,13 +3,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ERKIN on 11/08/2014.
  */
 public class Analyzer {
 
+    private Map<InstanceType, Integer> emptyHosts;
+    private Map<InstanceType, Integer> fullHosts;
     private List<Host> hostList;
 
     public Analyzer() {
@@ -60,9 +64,15 @@ public class Analyzer {
 
     public String calculateStats() {
 
-        //empty hosts of each type
 
+        //empty hosts of each type
+        emptyHosts = new HashMap<>();
         //full hosts of each type
+        fullHosts = new HashMap<>();
+
+        for (Host host : hostList) {
+            //if ()
+        }
 
         //count of most filled hosts by type
         //first find the most filled host count

@@ -23,5 +23,14 @@ public class HostTest {
         Assert.assertEquals(true, host.getSlotState(13));
     }
 
+    @Test
+    public void hostShouldBeEmpty() {
+        String info = "90,M2,2,0,0";
+
+        Host host = new Host(info);
+
+        Assert.assertTrue(host.isEmpty());
+    }
+
     //TODO think about error cases
 }

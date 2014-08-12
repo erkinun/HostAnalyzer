@@ -49,4 +49,14 @@ public class Host {
 
         return slotStates[index];
     }
+
+    public boolean isEmpty() {
+        boolean empty = true;
+
+        for (boolean state : slotStates) {
+            empty = empty && !state;
+        }
+
+        return empty;
+    }
 }

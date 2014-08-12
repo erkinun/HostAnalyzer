@@ -2,9 +2,9 @@ apply plugin: 'java'
 apply plugin: 'checkstyle'
 apply plugin: 'application'
 
+sourceCompatibility = 1.7
 mainClassName = 'Analyzer'
 
-sourceCompatibility = 1.5
 version = '1.0'
 
 repositories {
