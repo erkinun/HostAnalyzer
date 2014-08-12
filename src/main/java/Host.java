@@ -44,6 +44,10 @@ public class Host {
         return slotsLength;
     }
 
+    public int getOccupiedSlots() {
+        return occupiedSlots;
+    }
+
     public InstanceType getType() {
         return type;
     }
