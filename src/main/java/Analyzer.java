@@ -71,7 +71,16 @@ public class Analyzer {
         fullHosts = new HashMap<>();
 
         for (Host host : hostList) {
-            //if ()
+            if (host.isEmpty()) {
+                int emptyCount = emptyHosts.get(host.getType());
+                emptyCount++;
+                emptyHosts.put(host.getType(), emptyCount);
+            }
+            else if (host.isFull()){
+                int fullCount = fullHosts.get(host.getType());
+                fullCount++;
+                fullHosts.put(host.getType(), fullCount);
+            }
         }
 
         //count of most filled hosts by type
