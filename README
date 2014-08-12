@@ -1,1 +1,9 @@
 Host maximum capacity is assumed to be 100
+
+Host input line errors are handled individually, if you have 10 hosts and 3 of them are not appropriate,
+Analyzer will analyze 7 hosts.
+
+You can create a distribution using "gradle distZip" command.
+You can unzip the file, cd host_analyzer-1.0/bin and run ./host_analyzer FleetState.txt
+
+Analyzer main method only accepts one argument, and that argument needs to be FleetState.txt
