@@ -33,8 +33,6 @@ public class Analyzer {
             System.out.println("Input file name has to be FleetState.txt");
         }
 
-        //String fileName = "files/FleetState.txt";
-
         try {
             Analyzer analyzer = new Analyzer();
             analyzer.loadHost(fileName);
