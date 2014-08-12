@@ -58,8 +58,14 @@ public class Analyzer {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Host host = new Host(line);
-                hostList.add(host);
+                try{
+                    Host host = new Host(line);
+                    hostList.add(host);
+                }
+                catch (Exception e){
+                    System.out.println("invalid params for Host: " + e.getMessage());
+                }
+
             }
         }
     }
