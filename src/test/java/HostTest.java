@@ -32,5 +32,14 @@ public class HostTest {
         Assert.assertTrue(host.isEmpty());
     }
 
+    @Test
+    public void hostShouldBeFull() {
+        String info = "91,M1,3,1,1,1";
+
+        Host host = new Host(info);
+
+        Assert.assertTrue(host.isFull());
+    }
+
     //TODO think about error cases
 }

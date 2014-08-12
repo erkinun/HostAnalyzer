@@ -59,4 +59,14 @@ public class Host {
 
         return empty;
     }
+
+    public boolean isFull() {
+        boolean full = true;
+
+        for (boolean state : slotStates) {
+            full = full && state;
+        }
+
+        return full;
+    }
 }
