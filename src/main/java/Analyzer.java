@@ -2,10 +2,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 
 /**
  * Created by ERKIN on 11/08/2014.
@@ -53,7 +54,7 @@ public class Analyzer {
     }
 
     public void loadHost(String fileName) throws IOException {
-        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 Host host = new Host(line);
@@ -70,24 +71,37 @@ public class Analyzer {
         //full hosts of each type
         fullHosts = new HashMap<>();
 
-        for (Host host : hostList) {
-            if (host.isEmpty()) {
-                int emptyCount = emptyHosts.get(host.getType());
-                emptyCount++;
-                emptyHosts.put(host.getType(), emptyCount);
-            }
-            else if (host.isFull()){
-                int fullCount = fullHosts.get(host.getType());
-                fullCount++;
-                fullHosts.put(host.getType(), fullCount);
+        determineEmptyAndFull();
+
+        //count of most filled hosts by type
+        Host[] hostArray = new Host[hostList.size()];
+        hostList.toArray(hostArray);
+        Arrays.sort(hostArray, Host.BY_MOST_FILLED);
+
+
+        Map<InstanceType, Integer> mostFilled = new HashMap<>();
+        Map<InstanceType, Integer> mostOccupiedCount = new HashMap<>();
+        Map<InstanceType, Boolean> sweepDone = new HashMap<>();
+        for (Host host : hostArray) {
+            if (!host.isFull() && !sweepDone.get(host.getType())) {
+                int occupiedCount = mostOccupiedCount.get(host.getType());
+
+                if (host.getOccupiedSlots() > occupiedCount) {
+                    mostOccupiedCount.put(host.getType(), occupiedCount);
+                    int mostFilledCount = mostFilled.get(host.getType());
+                    mostFilledCount++;
+                    mostFilled.put(host.getType(), mostFilledCount);
+                }
+                else {
+                    sweepDone.put(host.getType(), true);
+                }
             }
         }
 
-        //count of most filled hosts by type
-        //first find the most filled host count
         //how many are those hosts
         throw new RuntimeException();
     }
+
 
     public void writeResults(String results) {
         String outFileName = "Statistics.txt";
@@ -97,4 +111,18 @@ public class Analyzer {
         return hostList.size();
     }
 
+    private void determineEmptyAndFull() {
+        for (Host host : hostList) {
+            if (host.isEmpty()) {
+                int emptyCount = emptyHosts.get(host.getType());
+                emptyCount++;
+                emptyHosts.put(host.getType(), emptyCount);
+            }
+            else if (host.isFull()) {
+                int fullCount = fullHosts.get(host.getType());
+                fullCount++;
+                fullHosts.put(host.getType(), fullCount);
+            }
+        }
+    }
 }

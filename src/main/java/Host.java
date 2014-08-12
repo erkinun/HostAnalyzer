@@ -1,13 +1,17 @@
+import java.util.Comparator;
+
 /**
  * Created by ERKIN on 11/08/2014.
  */
 public class Host {
 
-    private int id;
-    private int slotsLength;
+    public static final Comparator<Host> BY_MOST_FILLED = new ByMostFilled();
+
+    private final int id;
+    private final int slotsLength;
     private int occupiedSlots;
-    private InstanceType type;
-    private boolean[] slotStates;
+    private final InstanceType type;
+    private final boolean[] slotStates;
 
     Host(String infoLine) {
         //example: 89,M3,14,1,0,1,1,1,1,1,0,0,1,1,1,1,1
@@ -78,5 +82,12 @@ public class Host {
         }
 
         return full;
+    }
+
+    private static class ByMostFilled implements Comparator<Host> {
+        @Override
+        public int compare(Host h1, Host h2) {
+            return h1.getOccupiedSlots() - h2.getOccupiedSlots();
+        }
     }
 }
