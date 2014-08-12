@@ -31,4 +31,13 @@ public class AnalyzerTest {
 
         //check that a file exists
     }
+
+    @Test
+    public void shouldSortOk() throws Exception {
+        Host[] sorted = analyzer.sortHosts();
+
+        for (Host host : sorted) {
+            System.out.println(host.toString());
+        }
+    }
 }

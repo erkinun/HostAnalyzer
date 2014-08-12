@@ -30,7 +30,7 @@ public class HostTest {
         Host host = new Host(info);
 
         Assert.assertTrue(host.isEmpty());
-        Assert.assertEquals(0, host.getOccupiedSlots());
+        Assert.assertEquals(0, host.getLeftSlots());
     }
 
     @Test
@@ -40,7 +40,7 @@ public class HostTest {
         Host host = new Host(info);
 
         Assert.assertTrue(host.isFull());
-        Assert.assertEquals(3, host.getOccupiedSlots());
+        Assert.assertEquals(3, host.getLeftSlots());
     }
 
     //TODO think about error cases

@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,16 +20,18 @@ public class Analyzer {
 
     public static void main(String[] args) {
 
-        if (args.length != 1) {
-            System.out.println("You should supply an input file named "
-                    + "\"FleetState.txt\'");
-            return;
-        }
+//        if (args.length != 1) {
+//            System.out.println("You should supply an input file named "
+//                    + "\"FleetState.txt\'");
+//            return;
+//        }
+//
+//        String fileName = args[0];
+//        if (!fileName.equals("FleetState.txt")) {
+//            System.out.println("Input file name has to be FleetState.txt");
+//        }
 
-        String fileName = args[0];
-        if (!fileName.equals("FleetState.txt")) {
-            System.out.println("Input file name has to be FleetState.txt");
-        }
+        String fileName = "files/FleetState.txt";
 
         try {
             Analyzer analyzer = new Analyzer();
@@ -78,24 +77,34 @@ public class Analyzer {
         fullHosts.put(InstanceType.M3, 0);
 
         determineEmptyAndFull();
-
-        //count of most filled hosts by type
-        Host[] hostArray = new Host[hostList.size()];
-        hostList.toArray(hostArray);
-        Arrays.sort(hostArray, Host.BY_MOST_FILLED);
-
+        Host[] hostArray = sortHosts();
 
         String mostFilledLine = analyzeMostFilled(hostArray);
 
-        String emptyLine = produceLine(emptyHosts);
-        String fullLine = produceLine(fullHosts);
+        String emptyLine = produceLine("EMPTY", emptyHosts);
+        String fullLine = produceLine("FULL", fullHosts);
 
         return emptyLine + "\n" + fullLine + "\n" + mostFilledLine;
 
     }
 
-    public void writeResults(String results) {
+    public Host[] sortHosts() {
+        //count of most filled hosts by type
+        Host[] hostArray = new Host[hostList.size()];
+        hostList.toArray(hostArray);
+        Arrays.sort(hostArray, Host.BY_MOST_FILLED);
+        return hostArray;
+    }
+
+    public void writeResults(String results) throws IOException{
+        //TODO do not forget!
         String outFileName = "Statistics.txt";
+
+        System.out.println(results);
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName));
+        writer.write(results);
+        writer.close();
     }
 
     public int getHostCount() {
@@ -123,10 +132,10 @@ public class Analyzer {
         mostFilled.put(InstanceType.M2, 0);
         mostFilled.put(InstanceType.M3, 0);
 
-        Map<InstanceType, Integer> mostOccupiedCount = new HashMap<>();
-        mostOccupiedCount.put(InstanceType.M1, 0);
-        mostOccupiedCount.put(InstanceType.M2, 0);
-        mostOccupiedCount.put(InstanceType.M3, 0);
+        Map<InstanceType, Integer> leastFreeCount = new HashMap<>();
+        leastFreeCount.put(InstanceType.M1, Host.HOST_CAPACITY);
+        leastFreeCount.put(InstanceType.M2, Host.HOST_CAPACITY);
+        leastFreeCount.put(InstanceType.M3, Host.HOST_CAPACITY);
 
         Map<InstanceType, Boolean> sweepDone = new HashMap<>();
         sweepDone.put(InstanceType.M1, false);
@@ -135,10 +144,10 @@ public class Analyzer {
 
         for (Host host : hostArray) {
             if (!host.isFull() && !sweepDone.get(host.getType())) {
-                int occupiedCount = mostOccupiedCount.get(host.getType());
+                int freeCount = leastFreeCount.get(host.getType());
 
-                if (host.getOccupiedSlots() > occupiedCount) {
-                    mostOccupiedCount.put(host.getType(), occupiedCount);
+                if (host.getLeftSlots() <= freeCount) {
+                    leastFreeCount.put(host.getType(), host.getLeftSlots());
                     int mostFilledCount = mostFilled.get(host.getType());
                     mostFilledCount++;
                     mostFilled.put(host.getType(), mostFilledCount);
@@ -150,15 +159,15 @@ public class Analyzer {
         }
 
         return "MOST FILLED: M1=" + mostFilled.get(InstanceType.M1) + ","
-                + mostOccupiedCount.get(InstanceType.M1)
+                + leastFreeCount.get(InstanceType.M1)
                 + "; M2=" + mostFilled.get(InstanceType.M2) + ","
-                + mostOccupiedCount.get(InstanceType.M2)
+                + leastFreeCount.get(InstanceType.M2)
                 + "; M3=" + mostFilled.get(InstanceType.M3) + ","
-                + mostOccupiedCount.get(InstanceType.M3);
+                + leastFreeCount.get(InstanceType.M3);
     }
 
-    private String produceLine(Map<InstanceType, Integer> hosts) {
-        return "EMPTY: M1=" + hosts.get(InstanceType.M1) + "; M2="
+    private String produceLine(String type, Map<InstanceType, Integer> hosts) {
+        return type + ": M1=" + hosts.get(InstanceType.M1) + "; M2="
                 + hosts.get(InstanceType.M2) + "; M3="
                 + hosts.get(InstanceType.M3) + ";";
     }

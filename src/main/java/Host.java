@@ -6,15 +6,19 @@ import java.util.Comparator;
 public class Host {
 
     public static final Comparator<Host> BY_MOST_FILLED = new ByMostFilled();
+    //assumption hosts have 100 slots maximum
+    public static final int HOST_CAPACITY = 100;
 
     private final int id;
     private final int slotsLength;
     private int occupiedSlots;
     private final InstanceType type;
     private final boolean[] slotStates;
+    private String info;
 
     Host(String infoLine) {
         //example: 89,M3,14,1,0,1,1,1,1,1,0,0,1,1,1,1,1
+        info = infoLine;
 
         String[] values = infoLine.split(",");
 
@@ -48,8 +52,8 @@ public class Host {
         return slotsLength;
     }
 
-    public int getOccupiedSlots() {
-        return occupiedSlots;
+    public int getLeftSlots() {
+        return slotsLength - occupiedSlots;
     }
 
     public InstanceType getType() {
@@ -84,10 +88,15 @@ public class Host {
         return full;
     }
 
+    @Override
+    public String toString() {
+        return info;
+    }
+
     private static class ByMostFilled implements Comparator<Host> {
         @Override
         public int compare(Host h1, Host h2) {
-            return h1.getOccupiedSlots() - h2.getOccupiedSlots();
+            return h1.getLeftSlots() - h2.getLeftSlots();
         }
     }
 }
