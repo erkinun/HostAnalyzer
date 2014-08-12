@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -6,6 +11,10 @@ import java.util.List;
 public class Analyzer {
 
     private List<Host> hostList;
+
+    public Analyzer() {
+        hostList = new ArrayList<Host>();
+    }
 
     public static void main(String[] args) {
 
@@ -20,19 +29,33 @@ public class Analyzer {
             System.out.println("Input file name has to be FleetState.txt");
         }
 
-        Analyzer analyzer = new Analyzer();
-        analyzer.loadHost(fileName);
+        try {
+            Analyzer analyzer = new Analyzer();
+            analyzer.loadHost(fileName);
 
-        //calculate stats required
-        String results = analyzer.calculateStats();
+            //calculate stats required
+            String results = analyzer.calculateStats();
 
-        //write the results to output file
-        analyzer.writeResults(results);
+            //write the results to output file
+            analyzer.writeResults(results);
+        }
+        catch (FileNotFoundException fnfe) {
+            System.out.println(fnfe.getMessage());
+        }
+        catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
 
     }
 
-    public void loadHost(String fileName) {
-        throw new RuntimeException();
+    public void loadHost(String fileName) throws IOException {
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Host host = new Host(line);
+                hostList.add(host);
+            }
+        }
     }
 
     public String calculateStats() {

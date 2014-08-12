@@ -2,12 +2,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 
+import java.io.IOException;
+
 public class AnalyzerTest {
 
     private Analyzer analyzer;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         analyzer = new Analyzer();
         analyzer.loadHost("files/FleetState.txt");
     }
